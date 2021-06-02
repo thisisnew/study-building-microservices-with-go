@@ -1,29 +1,18 @@
-package main
+package reading_writing_json_5
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"net/http"
 )
 
 type helloWorldRequest struct {
-	Name string `json:"name"`
+	name string `json:"name"`
 }
 
 type helloWorldResponse struct {
 	Message string
 }
 
-func main() {
-	port := 8080
-
-	http.HandleFunc("/helloworld", HelloWorldHandler)
-
-	log.Printf("Server staring on port %v\n", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
-
-}
 func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	var request helloWorldRequest
 	decoder := json.NewDecoder(r.Body)
@@ -35,7 +24,7 @@ func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := helloWorldResponse{Message: "Hello " + request.Name}
+	response := helloWorldResponse{Message: "Hello " + request.name}
 
 	encoder := json.NewEncoder(w)
 	encoder.Encode(response)
