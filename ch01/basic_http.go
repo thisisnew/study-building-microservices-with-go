@@ -27,23 +27,16 @@ func main() {
 	log.Printf("Server staring on port %v\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
 
-	cathandler := http.FileServer(http.Dir("./images"))
-	http.Handle("/cat/", http.StripPrefix("/cat/", cathandler))
-
 }
 
 func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	var request helloWorldRequest
-	err := json.NewDecoder(r.Body).Decode(&request)
-
+	response := helloWorldResponse{Message: "HelloWorld"}
+	data, err := json.Marshal(response)
 	if err != nil {
-		http.Error(w, "Bad request", http.StatusBadRequest)
-		return
+		panic("Ooops")
 	}
 
-	response := helloWorldResponse{Message: "Hello " + request.Name}
-
-	json.NewEncoder(w).Encode(response)
+	fmt.Fprint(w, string(data))
 }
 
 //
