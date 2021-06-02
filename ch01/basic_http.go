@@ -5,19 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	json2 "study-building-microservices-with-go/ch01/reading_writing_json_2"
 )
-
-type helloWorldResponse struct {
-	Message string `json:"message"`
-}
-
-type helloWorldRequest struct {
-	Name string `json:"name"`
-}
-
-type validationHandler struct {
-	next http.Handler
-}
 
 func main() {
 	port := 8080
@@ -30,7 +19,7 @@ func main() {
 }
 
 func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	response := helloWorldResponse{Message: "HelloWorld"}
+	response := json2.HelloWorldResponse{Message: "Hello World"}
 	data, err := json.Marshal(response)
 	if err != nil {
 		panic("Ooops")
@@ -38,8 +27,3 @@ func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, string(data))
 }
-
-//
-//func newValidationHandler(next http.Handler) http.Handler {
-//	return validationHandler{next: next}
-//}
