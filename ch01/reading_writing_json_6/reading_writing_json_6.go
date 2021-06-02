@@ -7,29 +7,33 @@ import (
 	"net/http"
 )
 
+type helloWorldResponse struct {
+	Message string `json:"message"`
+}
+
 type helloWorldRequest struct {
 	Name string `json:"name"`
 }
 
-type helloWorldResponse struct {
-	Message string
-}
+type Sometwhing struct{}
 
 func main() {
 	port := 8080
 
-	http.HandleFunc("/helloworld", HelloWorldHandler)
+	cathandler := http.FileServer(http.Dir("./images"))
+	http.Handle("/cat/", http.StripPrefix("/cat/", cathandler))
 
-	log.Printf("Server staring on port %v\n", port)
+	http.HandleFunc("/helloworld", helloWorldHandler)
+
+	log.Printf("Server starting on port %v\n", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
-
 }
-func HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
+
+func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	var request helloWorldRequest
 	decoder := json.NewDecoder(r.Body)
 
 	err := decoder.Decode(&request)
-
 	if err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
