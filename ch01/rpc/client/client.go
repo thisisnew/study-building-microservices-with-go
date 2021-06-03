@@ -2,10 +2,9 @@ package client
 
 import (
 	"fmt"
+	"github.com/building-microservices-with-go/chapter1/rpc/contract"
 	"log"
 	"net/rpc"
-
-	"github.com/building-microservices-with-go/chapter1/rpc/contract"
 )
 
 const port = 1234
